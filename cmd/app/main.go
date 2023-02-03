@@ -22,13 +22,13 @@ func main() {
 
 	client := services.NewClient("Igor", "+992 907 77 77 77")
 
-	error := services.CheckCategory(product)
-	if error != nil {
-		fmt.Println(error)
+	err := services.CheckCategory(product)
+	if err != nil {
+		fmt.Println(err)
 		return
 	}
 
-	err := services.CheckInstallment(product)
+	err = services.CheckInstallment(product)
 	if err != nil {
 		fmt.Println(err)
 		return
