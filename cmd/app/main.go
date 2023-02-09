@@ -1,10 +1,13 @@
 package main
 
 import (
-	"fmt"
+	"log"
 
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
+
+	"github.com/ProninIgorr/alif-task-payments/app"
 	"github.com/ProninIgorr/alif-task-payments/internal/models"
-	"github.com/ProninIgorr/alif-task-payments/internal/services"
 )
 
 // P.S. В ТЗ немного неправильно была формулировака рассчета процента для смартфона
@@ -14,29 +17,20 @@ import (
 
 func main() {
 
-	product := &models.Product{
-		Category:    "Smartphone",
-		Amount:      1000,
-		Installment: 12,
-	}
-
-	client := services.NewClient("Igor", "+992 907 77 77 77")
-
-	err := services.CheckCategory(product)
+	//Connect to database
+	dsn := "host=localhost user=postgres password=postgres dbname=alif_payments port=54320 sslmode=disable "
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
-		fmt.Println(err)
-		return
+		panic("failed to connect database")
 	}
+	log.Println("Database connected")
 
-	err = services.CheckInstallment(product)
+	err = models.InitModels(db)
 	if err != nil {
-		fmt.Println(err)
-		return
+		panic("failed to init models")
 	}
 
-	totalPayment := services.TotalAmount(product)
-	paymentPerMonth := services.PaymentPerMonth(product)
-
-	services.SMSNotification(*product, *client, totalPayment, paymentPerMonth)
+	app.Start(db)
 
 }
+
