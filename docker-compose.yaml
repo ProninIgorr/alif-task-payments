@@ -1,0 +1,14 @@
+version: '3'
+services:
+  pgdb:
+    image: postgres:15
+    container_name: pgdb
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "54320:5432"
+    volumes:
+      - //c/Users/Admin/alif_payments/db/data:/var/lib/postgresql/data
+
+
