@@ -80,4 +80,5 @@ func SMSNotification(product models.Product, client models.Client, totalPayment 
 	fmt.Println("Количество месяцев платежей:", product.Installment)
 	fmt.Println("Общая сумма платежа:", totalPayment, "сомони")
 	fmt.Printf("Сумма платежа в месяц: %.2f сомони", PaymentperMonth)
+	fmt.Println()
 }
